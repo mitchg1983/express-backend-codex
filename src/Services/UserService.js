@@ -1,7 +1,7 @@
 const UserModel = require("../Models/UserModel");
 
-//Do I need this?
-// const bodyParser = require("body-parser");
+
+
 
 const getUsers = async (req, res, next) => {
   //logic to get users from database
@@ -16,6 +16,24 @@ const getUsers = async (req, res, next) => {
   }
 };
 
+const addNewUser = (req, res, next) => {
+  //Get new-user data from the request
+
+  console.log("addNewUser running");
+
+  try {
+    const { firstName, lastName, username, password } = req.body;
+
+    console.log("firstName, ", firstName);
+    console.log("lastName, ", lastName);
+    console.log("username, ", username);
+    console.log("password, ", password);
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
 module.exports = {
   getUsers,
+  addNewUser,
 };
