@@ -3,7 +3,7 @@ const express = require("express");
 const userRouter = require("./routes/userRouter");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
 const app = express();
 const PORT = process.env.PORT || 4444;
@@ -13,9 +13,6 @@ mongoose
   .then(() => console.log("Connected to MongoDB successfully."))
   .catch(() => console.log("Unable to connect to MongoDB..."));
 
-  //Body parser
-  app.use(bodyParser.json());
-
 //Parsing Cookies
 app.use((req, res, next) => {
   console.log(
@@ -24,14 +21,17 @@ app.use((req, res, next) => {
   next();
 });
 
+//CORS Policy
+app.use(cors());
+
+//Body parser
+app.use(bodyParser.json());
+
 //Parsing JSON
 app.use((req, res, next) => {
   console.log("Parsing your request into JSON we can work with it.");
   next();
 });
-
-//CORS Policy
-app.use(cors());
 
 //Authorization
 app.use((req, res, next) => {

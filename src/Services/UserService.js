@@ -1,7 +1,5 @@
 const UserModel = require("../Models/UserModel");
-
-
-
+const bcrypt = require("bcryptjs");
 
 const getUsers = async (req, res, next) => {
   //logic to get users from database
@@ -16,18 +14,32 @@ const getUsers = async (req, res, next) => {
   }
 };
 
-const addNewUser = (req, res, next) => {
+const addNewUser = async (req, res, next) => {
   //Get new-user data from the request
-
-  console.log("addNewUser running");
-
   try {
     const { firstName, lastName, username, password } = req.body;
 
-    console.log("firstName, ", firstName);
-    console.log("lastName, ", lastName);
-    console.log("username, ", username);
-    console.log("password, ", password);
+    // console.log("firstName, ", firstName);
+    // console.log("lastName, ", lastName);
+    // console.log("username, ", username);
+    // console.log("password, ", password);
+
+    let salt = await bcrypt.genSalt(10);
+    let hashedPassword = await bcrypt.hash(password, salt);
+
+    let newUser = new UserModel({
+      firstName: firstName,
+      lastName: lastName,
+      username: username,
+      password: hashedPassword,
+    });
+
+    let savedUser = await newUser.save();
+
+    res.status(200).json({
+      message: "New user saved.",
+      payload: savedUser,
+    });
   } catch (error) {
     res.status(500).json({ error: error });
   }
