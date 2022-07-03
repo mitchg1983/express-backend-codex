@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/userRouter");
+const characterRouter = require("./routes/characterRouter")
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -14,12 +16,7 @@ mongoose
   .catch(() => console.log("Unable to connect to MongoDB..."));
 
 //Parsing Cookies
-app.use((req, res, next) => {
-  console.log(
-    "Parsing your cookies from their native format, to a developer friendly format."
-  );
-  next();
-});
+app.use(cookieParser());
 
 //CORS Policy
 app.use(cors());
@@ -29,17 +26,19 @@ app.use(bodyParser.json());
 
 //Parsing JSON
 app.use((req, res, next) => {
-  console.log("Parsing your request into JSON we can work with it.");
+  //   console.log("Parsing your request into JSON we can work with it.");
   next();
 });
 
 //Authorization
 app.use((req, res, next) => {
-  console.log("--userAuthorization middleware--");
+  //   console.log("--userAuthorization middleware--");
   next();
 });
 
 app.use(userRouter);
+
+app.use(characterRouter);
 
 app.get("/", () => {
   console.log("@@Main route hit!@@");
