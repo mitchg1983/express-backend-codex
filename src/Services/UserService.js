@@ -67,9 +67,12 @@ const addNewUser = async (req, res, next) => {
 
 //POST LOG-IN an active user
 const userLogin = async (req, res, next) => {
+  console.log("beginning userLogin");
   try {
     //user will send a login request, with their email and UNHASHED password
-    const { email, password } = req.body;
+    const { email, password } = req.body.credentials;
+
+    console.log(email, " + ", password);
 
     //search the database for a profile, with an email field that matches what
     //was input by the user
@@ -96,10 +99,10 @@ const userLogin = async (req, res, next) => {
       { expiresIn: "8h" }
     );
 
-    res.cookie("session_token", jwtToken, { httpOnly: true, secure: false });
+    // res.cookie("session_token", jwtToken, { httpOnly: true, secure: false });
 
-    // res.status(200).json({ payload: jwtToken })
-    res.status(200).json({ message: "User logged in successfully." });
+    res.status(200).json({ payload: jwtToken })
+    // res.status(200).json({ jwtToken });
   } catch (error) {
     res.status(500).json({ error: error });
   }
@@ -107,6 +110,7 @@ const userLogin = async (req, res, next) => {
 
 const userLogOut = async (req, res, next) => {
   try {
+    console.log("logging out user...");
     res.clearCookie("session_token").send("User logged out.");
   } catch (error) {
     res.status(500).json({ error: error });
@@ -142,5 +146,5 @@ module.exports = {
   userLogin,
   getCurrentUser,
   updateProfile,
-  userLogOut
+  userLogOut,
 };

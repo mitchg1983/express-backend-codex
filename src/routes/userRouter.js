@@ -13,6 +13,10 @@ userRouter.get("/get-current-user", jwtMiddleware, async (req, res, next) => {
   return UserService.getCurrentUser(req, res, next);
 });
 
+userRouter.get("/user-logout", async (req, res, next) => {
+  return UserService.userLogOut(req, res, next);
+})
+
 //PUT routes
 userRouter.put("/update-profile", jwtMiddleware, async (req, res, next) => {
     console.log("update profile is hit")
@@ -29,9 +33,7 @@ userRouter.post("/user-login", async (req, res, next) => {
   return UserService.userLogin(req, res, next);
 });
 
-userRouter.post("/user-logout", async (req, res, next) => {
-  return UserServuce.userLogOut(req, res, next);
-})
+
 
 //DELETE routes
 

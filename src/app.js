@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/userRouter");
-const characterRouter = require("./routes/characterRouter")
+const characterRouter = require("./routes/characterRouter");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -15,11 +15,18 @@ mongoose
   .then(() => console.log("Connected to MongoDB successfully."))
   .catch(() => console.log("Unable to connect to MongoDB..."));
 
+mongoose.set("debug", true);
+
 //Parsing Cookies
 app.use(cookieParser());
 
 //CORS Policy
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+  })
+);
 
 //Body parser
 app.use(bodyParser.json());
